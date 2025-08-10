@@ -1,0 +1,32 @@
+{
+  "name": "wishbin",
+  "version": "1.0.0",
+  "description": "WishBin - A real-time wish app using Node.js, Express, MongoDB, EJS, and Socket.io",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "ejs",
+    "socket.io",
+    "mongodb",
+    "mongoose",
+    "dotenv",
+    "fullstack"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.3",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

@@ -1,0 +1,16 @@
+<%- include('layout', { body: `
+<div class="container">
+  <h1>💭 WishBin</h1>
+  <form action="/wish" method="POST">
+    <input type="text" name="name" placeholder="Enter your name" required>
+    <input type="text" name="regno" placeholder="Enter your reg no" required>
+    <textarea name="wish" placeholder="Enter your wish" required></textarea>
+    <button type="submit">Submit Wish</button>
+  </form>
+
+  <h2>All Wishes</h2>
+  <ul id="wish-list">
+    ${wishes.map(w => `<li>${w.name} (${w.regno}): ${w.wish}</li>`).join('')}
+  </ul>
+</div>
+` }) %>

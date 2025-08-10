@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WishBin</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- body %>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    socket.on('newWish', (wish) => {
+      const list = document.getElementById('wish-list');
+      const item = document.createElement('li');
+      item.textContent = `${wish.name} (${wish.regno}): ${wish.wish}`;
+      list.prepend(item);
+    });
+  </script>
+</body>
+</html>
