@@ -1,46 +1,82 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const http = require('http');
-const { Server } = require('socket.io');
-const Wish = require('./models/wishModel');
+const path = require('path');
+const session = require('express-session');
+const Wish = require('./models/Wish');
 
 dotenv.config();
-
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
 
-app.use(express.urlencoded({ extended: true }));
+// Set view engine
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'wishbin_secret_key', // change to a long random string
+    resave: false,
+    saveUninitialized: false
+}));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.log(err));
+    .then(() => console.log("✅ MongoDB Connected"))
+    .catch(err => console.error(err));
 
-// Routes
-app.get('/', async (req, res) => {
-  const wishes = await Wish.find().sort({ createdAt: -1 });
-  res.render('index', { wishes });
+// Home page - Choose mode
+app.get('/', (req, res) => {
+    res.render('index', { page: 'home', wishes: [], error: null });
 });
 
-app.post('/wish', async (req, res) => {
-  const { name, regno, wish } = req.body;
-  if (!name || !regno || !wish) {
-    return res.redirect('/');
-  }
-  const newWish = await Wish.create({ name, regno, wish });
-  io.emit('newWish', newWish);
-  res.redirect('/');
+// User form
+app.get('/user', (req, res) => {
+    res.render('index', { page: 'user', wishes: [], error: null });
 });
 
-// Socket.io
-io.on('connection', () => {
-  console.log('🟢 A user connected');
+app.post('/user', async (req, res) => {
+    const { name, wish } = req.body;
+    await Wish.create({ name, wish });
+    res.send('<h2>🎉 Your wish has been submitted! <a href="/">Go back</a></h2>');
 });
 
-server.listen(process.env.PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
+// Admin login
+app.get('/admin', (req, res) => {
+    res.render('index', { page: 'adminLogin', wishes: [], error: null });
 });
+
+app.post('/admin', (req, res) => {
+    const { password } = req.body;
+    if (password === process.env.ADMIN_PASSWORD) {
+        req.session.isAdmin = true;
+        return res.redirect('/admin/dashboard');
+    }
+    res.render('index', { page: 'adminLogin', wishes: [], error: '❌ Incorrect password' });
+});
+
+// Protect admin dashboard
+function isAdmin(req, res, next) {
+    if (req.session.isAdmin) {
+        return next();
+    }
+    res.redirect('/admin');
+}
+
+// Admin dashboard
+app.get('/admin/dashboard', isAdmin, async (req, res) => {
+    const wishes = await Wish.find().sort({ createdAt: -1 });
+    res.render('index', { page: 'adminDashboard', wishes, error: null });
+});
+
+// Logout
+app.get('/admin/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

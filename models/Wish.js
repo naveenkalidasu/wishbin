@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
 const wishSchema = new mongoose.Schema({
-  name: String,
-  regno: String,
-  wish: String
+    name: { type: String, required: true },
+    wish: { type: String, required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Wish', wishSchema);

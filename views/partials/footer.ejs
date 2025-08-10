@@ -1,12 +1,3 @@
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
-    socket.on('newWish', (wish) => {
-      const list = document.querySelector('#wishList');
-      const item = document.createElement('li');
-      item.textContent = wish.text;
-      list.prepend(item);
-    });
-  </script>
+</div>
 </body>
 </html>

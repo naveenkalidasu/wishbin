@@ -1,28 +1,108 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f7f7f7;
-  margin: 0;
-  padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
-.container {
-  max-width: 600px;
-  margin: auto;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  margin-top: 50px;
+
+h1, h2 {
+    margin-top: 20px;
+    font-weight: 600;
 }
-input, textarea, button {
-  width: 100%;
-  padding: 8px;
-  margin: 5px 0;
+
+.menu {
+    margin-top: 40px;
 }
+
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #ff7e5f;
+    border-radius: 25px;
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.btn:hover {
+    background: #feb47b;
+    transform: scale(1.05);
+}
+
+.btn.admin {
+    background: #43cea2;
+}
+
+form {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+input, textarea {
+    width: 250px;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+textarea {
+    height: 80px;
+    resize: none;
+}
+
 button {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
+    background: #ff7e5f;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
+
 button:hover {
-  background: #45a049;
+    background: #feb47b;
+    transform: scale(1.05);
+}
+
+.error {
+    background: rgba(255, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 8px;
+    color: #ffdddd;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+table th, table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+table th {
+    background: rgba(0,0,0,0.3);
+}
+
+table tr:hover {
+    background: rgba(255,255,255,0.05);
 }

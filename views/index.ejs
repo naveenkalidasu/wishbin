@@ -1,16 +1,48 @@
-<%- include('layout', { body: `
-<div class="container">
-  <h1>💭 WishBin</h1>
-  <form action="/wish" method="POST">
-    <input type="text" name="name" placeholder="Enter your name" required>
-    <input type="text" name="regno" placeholder="Enter your reg no" required>
-    <textarea name="wish" placeholder="Enter your wish" required></textarea>
-    <button type="submit">Submit Wish</button>
-  </form>
+<%- include('partials/header') %>
 
-  <h2>All Wishes</h2>
-  <ul id="wish-list">
-    ${wishes.map(w => `<li>${w.name} (${w.regno}): ${w.wish}</li>`).join('')}
-  </ul>
-</div>
-` }) %>
+<% if (page === 'home') { %>
+    <h1>💭 Welcome to WishBin</h1>
+    <div class="menu">
+        <a href="/user" class="btn">User Mode</a>
+        <a href="/admin" class="btn admin">Admin Mode</a>
+    </div>
+<% } %>
+
+<% if (page === 'user') { %>
+    <h2>🌟 Submit Your Wish</h2>
+    <form method="POST" action="/user">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <textarea name="wish" placeholder="Your Wish" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+<% } %>
+
+<% if (page === 'adminLogin') { %>
+    <h2>🔑 Admin Login</h2>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
+    <form method="POST" action="/admin">
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <button type="submit">Login</button>
+    </form>
+<% } %>
+
+<% if (page === 'adminDashboard') { %>
+    <h2>📜 All Wishes</h2>
+    <a href="/admin/logout" class="btn admin">Logout</a>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Wish</th>
+            <th>Date</th>
+        </tr>
+        <% wishes.forEach(w => { %>
+            <tr>
+                <td><%= w.name %></td>
+                <td><%= w.wish %></td>
+                <td><%= w.createdAt.toLocaleString() %></td>
+            </tr>
+        <% }) %>
+    </table>
+<% } %>
+
+<%- include('partials/footer') %>
